@@ -7,7 +7,7 @@ import com.octo.formation.dto.VirementDto;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.VirementRepository;
-import java.util.Date;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,10 +34,7 @@ public class VirementService {
     Compte compteBeneficiaire = compteRepository
         .findByNrCompte(virementDto.getNrCompteBeneficiaire());
 
-    if (compteEmetteur.getSolde().compareTo(virementDto.getMontantVirement()) < 0) {
-      throw new SoldeDisponibleInsuffisantException(
-          "Solde insuffisant pour l'utilisateur " + compteEmetteur.getUtilisateur().getUsername());
-    }
+
 
     compteEmetteur.setSolde(compteEmetteur.getSolde().subtract(virementDto.getMontantVirement()));
     compteRepository.save(compteEmetteur);
@@ -58,5 +55,19 @@ public class VirementService {
         "Virement depuis " + virementDto.getNrCompteEmetteur() + " vers " + virementDto
             .getNrCompteBeneficiaire() + " d'un montant de " + virementDto.getMontantVirement()
             .toString());
+
+    try {
+      compare(compteEmetteur, virementDto);
+    } catch (SoldeDisponibleInsuffisantException e) {
+    //  TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+    }
+
+  }
+
+  private void compare(Compte compteEmetteur, VirementDto virementDto) throws SoldeDisponibleInsuffisantException {
+    if (compteEmetteur.getSolde().compareTo(virementDto.getMontantVirement()) < 0) {
+      throw new SoldeDisponibleInsuffisantException(
+              "Solde insuffisant pour l'utilisateur " + compteEmetteur.getUtilisateur().getUsername());
+    }
   }
 }

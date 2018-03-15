@@ -62,7 +62,7 @@ public class FormationApplication implements CommandLineRunner {
 		compteRepository.save(compte2);
 
 		VirementDto virement = new VirementDto();
-		virement.setMontantVirement(BigDecimal.valueOf(200L));
+		virement.setMontantVirement(BigDecimal.valueOf(20000000000L));
 		virement.setNrCompteEmetteur("010000A000001000");
 		virement.setNrCompteBeneficiaire("010000B025001000");
 
