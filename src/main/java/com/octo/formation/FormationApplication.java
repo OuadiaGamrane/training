@@ -67,6 +67,5 @@ public class FormationApplication implements CommandLineRunner {
 		virement.setNrCompteBeneficiaire("010000B025001000");
 
 		virementService.virement(virement);
-
 	}
 }
