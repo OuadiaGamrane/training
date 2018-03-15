@@ -8,6 +8,7 @@ import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Utilisateur;
 import com.octo.formation.domain.Virement;
 import com.octo.formation.dto.VirementDto;
+import com.octo.formation.exceptions.CompteNonExistantException;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.VirementRepository;
@@ -37,7 +38,8 @@ public class VirementServiceTest {
   AutiService autiService;
 
   @Test
-  public void virementSuccess() throws SoldeDisponibleInsuffisantException {
+  public void virementSuccess()
+      throws SoldeDisponibleInsuffisantException, CompteNonExistantException {
 
     // given
     Utilisateur utilisateur1 = new Utilisateur();
@@ -84,7 +86,7 @@ public class VirementServiceTest {
   }
 
   @Test(expected = SoldeDisponibleInsuffisantException.class)
-  public void virementFail() throws SoldeDisponibleInsuffisantException {
+  public void virementFail() throws SoldeDisponibleInsuffisantException, CompteNonExistantException {
     // given
     Utilisateur utilisateur1 = new Utilisateur();
     utilisateur1.setUsername("user1");

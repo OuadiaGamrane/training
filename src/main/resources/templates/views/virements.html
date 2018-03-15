@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="layouts/layout">
+
+<div layout:fragment="content">
+  <div class="hero-unit">
+    <a href="#" th:href="@{/virements/new}">Ajouter un virement</a>
+  </div>
+  <div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">List des virements :</label>
+      <div class="row col-md-7 table-responsive">
+        <table id="eventsTable" data-toggle="table" data-height="300" class="table"
+               data-url=""
+               data-pagination="true" data-search="true" data-show-refresh="true"
+               data-show-toggle="true" data-show-columns="true"
+               data-toolbar="#toolbar">
+          <thead>
+          <tr>
+            <th data-field="name">Date</th>
+            <th data-field="name">Compte Emetteur</th>
+            <th data-field="name">Compte Beneficiaire</th>
+            <th data-field="name">Montant</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="virement: ${virements}">
+            <td th:text="${virement.dateExecution}">AC</td>
+            <td th:text="${virement.compteEmetteur.nrCompte}">AC</td>
+            <td th:text="${virement.compteBeneficiaire.nrCompte}">AC</td>
+            <td th:text="${virement.montantVirement}">AC</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

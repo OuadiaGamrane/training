@@ -7,6 +7,7 @@ import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.UtilisateurRepository;
 import com.octo.formation.service.VirementService;
 import java.math.BigDecimal;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -65,6 +66,7 @@ public class FormationApplication implements CommandLineRunner {
 		virement.setMontantVirement(BigDecimal.valueOf(200L));
 		virement.setNrCompteEmetteur("010000A000001000");
 		virement.setNrCompteBeneficiaire("010000B025001000");
+		virement.setDate(new Date());
 
 		virementService.virement(virement);
 	}

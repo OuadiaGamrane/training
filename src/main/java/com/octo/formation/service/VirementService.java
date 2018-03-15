@@ -4,10 +4,12 @@ import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Virement;
 import com.octo.formation.domain.util.EventType;
 import com.octo.formation.dto.VirementDto;
+import com.octo.formation.exceptions.CompteNonExistantException;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.VirementRepository;
 import java.util.Date;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,20 @@ public class VirementService {
     this.autiService = autiService;
   }
 
-  public void virement(VirementDto virementDto) throws SoldeDisponibleInsuffisantException {
+  public List<Virement> loadAll() {
+    return virementRepository.findAll();
+  }
+
+  public void virement(VirementDto virementDto)
+      throws SoldeDisponibleInsuffisantException, CompteNonExistantException {
     Compte compteEmetteur = compteRepository.findByNrCompte(virementDto.getNrCompteEmetteur());
     Compte compteBeneficiaire = compteRepository
         .findByNrCompte(virementDto.getNrCompteBeneficiaire());
+
+    if(compteEmetteur == null || compteBeneficiaire == null) {
+      throw new CompteNonExistantException("Compte Non existant");
+    }
+
 
     if (compteEmetteur.getSolde().compareTo(virementDto.getMontantVirement()) < 0) {
       throw new SoldeDisponibleInsuffisantException(
