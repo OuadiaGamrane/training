@@ -35,6 +35,13 @@ public class VirementService {
           "Solde insuffisant pour l'utilisateur " + compteEmetteur.getUtilisateur().getUsername());
     }
 
+    compteEmetteur.setSolde(compteEmetteur.getSolde().subtract(virementDto.getMontantVirement()));
+    compteRepository.save(compteEmetteur);
+
+    compteBeneficiaire
+        .setSolde(compteBeneficiaire.getSolde().add(virementDto.getMontantVirement()));
+    compteRepository.save(compteBeneficiaire);
+
     Virement virement = new Virement();
     virement.setDateExecution(new Date());
     virement.setCompteBeneficiaire(compteBeneficiaire);
