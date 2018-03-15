@@ -7,6 +7,8 @@ import java.util.Set;
 public interface UtilisateurRepository {
     Optional<Utilisateur> findOne(long id);
 
+    Utilisateur findByUserName(String username);
+
     Set<Utilisateur> findAll();
 
     void save(Utilisateur personne);

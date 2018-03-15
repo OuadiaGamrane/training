@@ -26,6 +26,17 @@ public class EntityManagerUtilisateurRepository implements UtilisateurRepository
     }
 
     @Override
+    public Utilisateur findByUserName(String username) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Utilisateur> query = criteriaBuilder.createQuery(Utilisateur.class);
+        Root<Utilisateur> rootEntry = query.from(Utilisateur.class);
+        query.where(criteriaBuilder.equal(rootEntry.get("username"), username));
+        CriteriaQuery<Utilisateur> uniq = query.select(rootEntry);
+        return entityManager.createQuery(uniq).getSingleResult();
+    }
+
+    @Override
     public Set<Utilisateur> findAll() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
