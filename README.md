@@ -1,13 +1,14 @@
 ## Formation Spring : 
 
-* Tp #1: 
+* Tp #3: 
 
-Ajouter la logic des virements sur la class :
+- Ajouter Une table d'audit :
 
 ```
-public class VirementService {
+public class Audit {
+ private Date date;
+ private EventType eventType;
+ private String message;
 ```
 
-* 1- Récupération des comptes par numero de compte
-* 2- Vérification du solde (exception dans le cas de non suffisance du solde )
-* 3- Persistance du virement
+* Ajout la logic d'audit au virement

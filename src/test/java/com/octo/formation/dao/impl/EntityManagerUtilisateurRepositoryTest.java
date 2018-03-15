@@ -2,8 +2,8 @@ package com.octo.formation.dao.impl;
 
 import static org.junit.Assert.assertTrue;
 
-import com.octo.formation.dao.UtilisateurRepository;
 import com.octo.formation.domain.Utilisateur;
+import com.octo.formation.repository.UtilisateurRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,9 +22,6 @@ public class EntityManagerUtilisateurRepositoryTest {
 
   @Autowired
   private UtilisateurRepository personRepository;
-
-  @PersistenceContext(unitName = "entityManager")
-  private EntityManager entityManager;
 
   @Test
   public void findOne() {
@@ -45,19 +42,10 @@ public class EntityManagerUtilisateurRepositoryTest {
     personRepository.save(personne);
 
     // then
-    assertTrue(countRowsInTableMessage() == 1);
+    assertTrue(personRepository.count() == 1);
   }
 
   @Test
   public void delete() {
-  }
-
-  private int countRowsInTableMessage() {
-    return DataAccessUtils.intResult(
-        entityManager.createNativeQuery("select count(*) from Utilisateur").getResultList());
-  }
-
-  private List<Utilisateur> queryAllMessagesFromDatabase() {
-    return entityManager.createQuery("from Utilisateur", Utilisateur.class).getResultList();
   }
 }

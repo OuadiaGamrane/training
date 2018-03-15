@@ -1,13 +1,12 @@
 package com.octo.formation;
 
-import com.octo.formation.dao.CompteRepository;
-import com.octo.formation.dao.UtilisateurRepository;
-import com.octo.formation.dao.VirementRepository;
 import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Utilisateur;
-import com.octo.formation.domain.Virement;
+import com.octo.formation.dto.VirementDto;
+import com.octo.formation.repository.CompteRepository;
+import com.octo.formation.repository.UtilisateurRepository;
+import com.octo.formation.service.VirementService;
 import java.math.BigDecimal;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +20,7 @@ public class FormationApplication implements CommandLineRunner {
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
 	@Autowired
-	private VirementRepository virementRepository;
+	private VirementService virementService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FormationApplication.class, args);
@@ -62,13 +61,12 @@ public class FormationApplication implements CommandLineRunner {
 
 		compteRepository.save(compte2);
 
-		Virement virement = new Virement();
-		virement.setDateExecution(new Date());
-		virement.setCompteBeneficiaire(compte2);
-		virement.setCompteEmetteur(compte1);
-		virement.setMontantVirement(BigDecimal.valueOf(200));
+		VirementDto virement = new VirementDto();
+		virement.setMontantVirement(BigDecimal.valueOf(200L));
+		virement.setNrCompteEmetteur("010000A000001000");
+		virement.setNrCompteBeneficiaire("010000B025001000");
 
-		virementRepository.save(virement);
+		virementService.virement(virement);
 
 	}
 }
