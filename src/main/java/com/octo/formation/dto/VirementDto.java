@@ -1,12 +1,14 @@
 package com.octo.formation.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class VirementDto {
   private String nrCompteEmetteur;
   private String nrCompteBeneficiaire;
   private String motif;
   private BigDecimal montantVirement;
+  private Date date;
 
   public String getNrCompteEmetteur() {
     return nrCompteEmetteur;
@@ -38,5 +40,13 @@ public class VirementDto {
 
   public void setMotif(String motif) {
     this.motif = motif;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 }

@@ -2,6 +2,7 @@ package com.octo.formation.service;
 
 import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Virement;
+import com.octo.formation.domain.util.EventType;
 import com.octo.formation.dto.VirementDto;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
@@ -17,12 +18,15 @@ public class VirementService {
 
   private final CompteRepository compteRepository;
   private final VirementRepository virementRepository;
+  private final AutiService autiService;
 
   @Autowired
   public VirementService(CompteRepository compteRepository,
-      VirementRepository virementRepository) {
+      VirementRepository virementRepository,
+      AutiService autiService) {
     this.compteRepository = compteRepository;
     this.virementRepository = virementRepository;
+    this.autiService = autiService;
   }
 
   public void virement(VirementDto virementDto) throws SoldeDisponibleInsuffisantException {
@@ -43,11 +47,16 @@ public class VirementService {
     compteRepository.save(compteBeneficiaire);
 
     Virement virement = new Virement();
-    virement.setDateExecution(new Date());
+    virement.setDateExecution(virementDto.getDate());
     virement.setCompteBeneficiaire(compteBeneficiaire);
     virement.setCompteEmetteur(compteEmetteur);
     virement.setMontantVirement(virementDto.getMontantVirement());
 
     virementRepository.save(virement);
+
+    autiService.audit(EventType.VIREMENT,
+        "Virement depuis " + virementDto.getNrCompteEmetteur() + " vers " + virementDto
+            .getNrCompteBeneficiaire() + " d'un montant de " + virementDto.getMontantVirement()
+            .toString());
   }
 }

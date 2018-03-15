@@ -2,13 +2,15 @@
 
 * Tp #3: 
 
-- Ajouter Une table d'audit :
+- Ajouter les tests du virement :
 
 ```
-public class Audit {
- private Date date;
- private EventType eventType;
- private String message;
-```
+VirementServiceTest
 
-* Ajout la logic d'audit au virement
+//then
+    ArgumentCaptor<Virement> virement = ArgumentCaptor.forClass(Virement.class);
+    Mockito.verify(virementRepository).save(virement.capture());
+    Assert.assertEquals("010000A000001000", virement.getValue().getCompteEmetteur().getNrCompte());
+
+    Mockito.verify(compteRepository, times(2)).save(any(Compte.class));
+```
