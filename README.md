@@ -1,16 +1,15 @@
 ## Formation Spring : 
 
-* Tp #3: 
+* Tp #4: 
 
-- Ajouter les tests du virement :
+- Les transactions : 
 
-```
-VirementServiceTest
+ exec virement with sold insuffisant
+ exec virement with sold insuffisant with dontrollbackfor
+ exec virement with no @Transactional
+ chnage SoldDispoException to Exception and run same tests
+ 
+ 
+ 
 
-//then
-    ArgumentCaptor<Virement> virement = ArgumentCaptor.forClass(Virement.class);
-    Mockito.verify(virementRepository).save(virement.capture());
-    Assert.assertEquals("010000A000001000", virement.getValue().getCompteEmetteur().getNrCompte());
 
-    Mockito.verify(compteRepository, times(2)).save(any(Compte.class));
-```

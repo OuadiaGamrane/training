@@ -3,14 +3,18 @@ package com.octo.formation;
 import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Utilisateur;
 import com.octo.formation.dto.VirementDto;
+import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.UtilisateurRepository;
+import com.octo.formation.repository.VirementRepository;
 import com.octo.formation.service.VirementService;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.transaction.Transactional;
 
 @SpringBootApplication
 public class FormationApplication implements CommandLineRunner {
@@ -19,6 +23,8 @@ public class FormationApplication implements CommandLineRunner {
 	private CompteRepository compteRepository;
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
+	@Autowired
+	private VirementRepository virementRepository;
 	@Autowired
 	private VirementService virementService;
 
@@ -48,7 +54,7 @@ public class FormationApplication implements CommandLineRunner {
 		Compte compte1 = new Compte();
 		compte1.setNrCompte("010000A000001000");
 		compte1.setRib("RIB1");
-		compte1.setSolde(BigDecimal.valueOf(200000L));
+		compte1.setSolde(BigDecimal.valueOf(30000000000L));
 		compte1.setUtilisateur(utilisateur1);
 
 		compteRepository.save(compte1);
@@ -62,10 +68,21 @@ public class FormationApplication implements CommandLineRunner {
 		compteRepository.save(compte2);
 
 		VirementDto virement = new VirementDto();
-		virement.setMontantVirement(BigDecimal.valueOf(20000000000L));
+		virement.setMontantVirement(BigDecimal.valueOf(2000L));
 		virement.setNrCompteEmetteur("010000A000001000");
 		virement.setNrCompteBeneficiaire("010000B025001000");
 
-		virementService.virement(virement);
+		System.out.println("•• Before virement");
+
+		try {
+			virementService.virement(virement);
+		} catch (SoldeDisponibleInsuffisantException e) {
+
+		}
+
+		System.out.println("•• After virement");
+
+
+		System.out.println("All virements " + virementRepository.findAll());
 	}
 }

@@ -1,6 +1,6 @@
 package com.octo.formation.exceptions;
 
-public class SoldeDisponibleInsuffisantException extends Exception {
+public class SoldeDisponibleInsuffisantException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 

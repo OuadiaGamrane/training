@@ -82,4 +82,17 @@ public class Virement {
   public void setId(Long id) {
     this.id = id;
   }
+
+
+  @Override
+  public String toString() {
+    return "Virement{" +
+            "id=" + id +
+            ", montantVirement=" + montantVirement +
+            ", dateExecution=" + dateExecution +
+            ", compteEmetteur=" + compteEmetteur +
+            ", compteBeneficiaire=" + compteBeneficiaire +
+            ", motifVirement='" + motifVirement + '\'' +
+            '}';
+  }
 }

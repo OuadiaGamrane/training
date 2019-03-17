@@ -35,7 +35,6 @@ public class VirementService {
         .findByNrCompte(virementDto.getNrCompteBeneficiaire());
 
 
-
     compteEmetteur.setSolde(compteEmetteur.getSolde().subtract(virementDto.getMontantVirement()));
     compteRepository.save(compteEmetteur);
 
@@ -56,12 +55,7 @@ public class VirementService {
             .getNrCompteBeneficiaire() + " d'un montant de " + virementDto.getMontantVirement()
             .toString());
 
-    try {
       compare(compteEmetteur, virementDto);
-    } catch (SoldeDisponibleInsuffisantException e) {
-    //  TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-    }
-
   }
 
   private void compare(Compte compteEmetteur, VirementDto virementDto) throws SoldeDisponibleInsuffisantException {
