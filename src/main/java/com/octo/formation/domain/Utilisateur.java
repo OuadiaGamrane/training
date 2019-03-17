@@ -93,4 +93,16 @@ public class Utilisateur {
   public void setId(Long id) {
     this.id = id;
   }
+
+  @Override
+  public String toString() {
+    return "Utilisateur{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            ", gender='" + gender + '\'' +
+            ", lastname='" + lastname + '\'' +
+            ", firstname='" + firstname + '\'' +
+            ", birthdate=" + birthdate +
+            '}';
+  }
 }
