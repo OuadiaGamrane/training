@@ -4,6 +4,7 @@ import com.octo.formation.domain.Compte;
 import com.octo.formation.domain.Virement;
 import com.octo.formation.domain.util.EventType;
 import com.octo.formation.dto.VirementDto;
+import com.octo.formation.exceptions.CompteNonExistantException;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.VirementRepository;
@@ -29,10 +30,14 @@ public class VirementService {
     this.autiService = autiService;
   }
 
-  public void virement(VirementDto virementDto) throws SoldeDisponibleInsuffisantException {
+  public void virement(VirementDto virementDto) throws SoldeDisponibleInsuffisantException, CompteNonExistantException {
     Compte compteEmetteur = compteRepository.findByNrCompte(virementDto.getNrCompteEmetteur());
     Compte compteBeneficiaire = compteRepository
         .findByNrCompte(virementDto.getNrCompteBeneficiaire());
+
+    if(compteBeneficiaire == null || compteEmetteur == null) {
+      throw new CompteNonExistantException("Cannot find account");
+    }
 
     if (compteEmetteur.getSolde().compareTo(virementDto.getMontantVirement()) < 0) {
       throw new SoldeDisponibleInsuffisantException(
