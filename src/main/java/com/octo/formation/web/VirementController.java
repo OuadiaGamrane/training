@@ -3,56 +3,33 @@ package com.octo.formation.web;
 import com.octo.formation.dto.VirementDto;
 import com.octo.formation.exceptions.CompteNonExistantException;
 import com.octo.formation.exceptions.SoldeDisponibleInsuffisantException;
+import com.octo.formation.mapper.VirementMapper;
 import com.octo.formation.service.VirementService;
-import java.time.LocalDateTime;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@RestController(value = "/virements")
 class VirementController {
 
   @Autowired
   private VirementService virementService;
 
-  @GetMapping("/virements")
-  String load(Model model) {
-    model.addAttribute("virements", virementService.loadAll());
-    return "views/virements";
-  }
-
-  @GetMapping("/virements/new")
-  String newVirement(Model model) {
-    model.addAttribute("now", LocalDateTime.now());
-    model.addAttribute("virementDto", new VirementDto());
-    return "views/virementForm";
+  @GetMapping
+  List<VirementDto> loadAll() {
+    return Optional.ofNullable(virementService.loadAll()).orElse(Collections.emptyList())
+            .stream().map(VirementMapper::map).collect(Collectors.toList());
   }
 
   @PostMapping("/virements")
-  public String submit(@ModelAttribute VirementDto virementDto)
+  @ResponseStatus(HttpStatus.CREATED)
+  public void createTransaction(@RequestBody VirementDto virementDto)
       throws SoldeDisponibleInsuffisantException, CompteNonExistantException {
-    virementDto.setDate(new Date());
     virementService.virement(virementDto);
-    return "redirect:virements";
-  }
-
-  @ExceptionHandler(SoldeDisponibleInsuffisantException.class)
-  public String handleSoldeDisponibleInsuffisantException(SoldeDisponibleInsuffisantException ex, Model model) {
-    // add needed model attributes
-    model.addAttribute("exception",  ex.getMessage());
-    return newVirement(model);
-  }
-
-  @ExceptionHandler(CompteNonExistantException.class)
-  public String handleCompteNonExistantException(CompteNonExistantException ex, Model model) {
-    // add needed model attributes
-    model.addAttribute("exception",  ex.getMessage());
-    return newVirement(model);
   }
 }

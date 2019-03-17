@@ -1,14 +1,8 @@
 package com.octo.formation.domain;
 
 import com.octo.formation.domain.util.EventType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "AUDIT")
@@ -17,7 +11,7 @@ public class Audit {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(length = 100, unique = true)
+  @Column(length = 100)
   private String message;
 
   @Enumerated(EnumType.STRING)

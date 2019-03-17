@@ -3,9 +3,10 @@ package com.octo.formation.service;
 import com.octo.formation.domain.Audit;
 import com.octo.formation.domain.util.EventType;
 import com.octo.formation.repository.AuditRepository;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Transactional

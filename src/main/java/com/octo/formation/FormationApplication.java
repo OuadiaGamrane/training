@@ -6,12 +6,13 @@ import com.octo.formation.dto.VirementDto;
 import com.octo.formation.repository.CompteRepository;
 import com.octo.formation.repository.UtilisateurRepository;
 import com.octo.formation.service.VirementService;
-import java.math.BigDecimal;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @SpringBootApplication
 public class FormationApplication implements CommandLineRunner {
